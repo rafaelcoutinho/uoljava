@@ -1,4 +1,4 @@
-package edu.inheritance.example1;
+
 
 /**
  * Entry point for the executable Jar
