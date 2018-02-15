@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import edu.overtransport.DestinationDB;
 import edu.overtransport.TransportService;
 import edu.overtransport.exception.BrokenCar;
 import edu.overtransport.exception.LackOfResourcesException;
@@ -15,12 +16,13 @@ import edu.overtransport.model.vehicles.RancingCar;
 import edu.overtransport.model.vehicles.SUV;
 
 public class BasicTestCases {
+	DestinationDB db = new DestinationDB();
 
 	@Test
 	public void testSlowSUVShortTrip() {
 		SUV suv = new SUV("Jeep");
 		TransportService ts = new TransportService();
-		Trip toEdimburg = ts.getTrip(TransportService.SHORT_TRIP);
+		Trip toEdimburg = db.getTrip(DestinationDB.SHORT_TRIP);
 		ts.startTrip(suv, toEdimburg);
 		try {
 			suv.accelerate();
@@ -44,7 +46,7 @@ public class BasicTestCases {
 	public void testFastSUVShortTrip() {
 		SUV suv = new SUV("Jeep");
 		TransportService ts = new TransportService();
-		Trip toEdimburg = ts.getTrip(TransportService.SHORT_TRIP);
+		Trip toEdimburg = db.getTrip(DestinationDB.SHORT_TRIP);
 		ts.startTrip(suv, toEdimburg);
 		try {
 			while (suv.accelerate())
@@ -69,7 +71,7 @@ public class BasicTestCases {
 	public void testRacingCarToAFarm() {
 		RancingCar vehicle = new RancingCar("Lamborghini");
 		TransportService ts = new TransportService();
-		Trip toEdimburg = ts.getTrip(TransportService.TO_A_FARM);
+		Trip toEdimburg = db.getTrip(DestinationDB.TO_A_FARM);
 		ts.startTrip(vehicle, toEdimburg);
 		try {
 			vehicle.accelerate();
@@ -94,8 +96,8 @@ public class BasicTestCases {
 	public void testRacingCarToAFarmTooFastForATrack() {
 		RancingCar vehicle = new RancingCar("Lamborghini");
 		TransportService ts = new TransportService();
-		Trip toEdimburg = ts.getTrip(TransportService.TO_A_FARM);
-		ts.startTrip(vehicle, toEdimburg);
+		Trip trip = db.getTrip(DestinationDB.TO_A_FARM);
+		ts.startTrip(vehicle, trip);
 		try {
 			while (vehicle.getSpeed() < 40) {
 				vehicle.accelerate();
@@ -123,7 +125,7 @@ public class BasicTestCases {
 	public void testRacingCarLongTripWithoutRefueling() {
 		RancingCar vehicle = new RancingCar("Lamborghini");
 		TransportService ts = new TransportService();
-		Trip toEdimburg = ts.getTrip(TransportService.LONG_TRIP);
+		Trip toEdimburg = db.getTrip(DestinationDB.LONG_TRIP);
 		ts.startTrip(vehicle, toEdimburg);
 		try {
 			while (vehicle.getSpeed() < 40) {
@@ -150,7 +152,8 @@ public class BasicTestCases {
 	public void testChariotLongTripWithoutRefueling() {
 		Chariot vehicle = new Chariot(1);
 		TransportService ts = new TransportService();
-		Trip toEdimburg = ts.getTrip(TransportService.LONG_TRIP);
+
+		Trip toEdimburg = db.getTrip(DestinationDB.LONG_TRIP);
 		ts.startTrip(vehicle, toEdimburg);
 		try {
 			vehicle.accelerate();
@@ -176,7 +179,7 @@ public class BasicTestCases {
 	public void testChariotLongTripRefueling() {
 		Chariot vehicle = new Chariot(1);
 		TransportService ts = new TransportService();
-		Trip toEdimburg = ts.getTrip(TransportService.LONG_TRIP);
+		Trip toEdimburg = db.getTrip(DestinationDB.LONG_TRIP);
 		ts.startTrip(vehicle, toEdimburg);
 		try {
 			vehicle.accelerate();
