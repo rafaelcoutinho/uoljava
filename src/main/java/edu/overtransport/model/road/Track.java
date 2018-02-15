@@ -6,7 +6,7 @@ import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.vehicles.RancingCar;
 import edu.overtransport.model.vehicles.Vehicle;
 
-public class Track implements Road {
+public class Track implements RoadSegment {
 	private String name;
 	private final static int MAX_TRACK_SPEED = 40;
 

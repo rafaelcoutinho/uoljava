@@ -5,7 +5,7 @@ import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.vehicles.Vehicle;
 
-public class CityStreet implements Road {
+public class CityStreet implements RoadSegment {
 
 	private String name;
 	private int maxSpeed;

@@ -5,7 +5,7 @@ import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.vehicles.Vehicle;
 
-public interface Road {
+public interface RoadSegment {
 
 	public String getName();
 

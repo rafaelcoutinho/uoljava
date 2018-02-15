@@ -2,19 +2,19 @@ package edu.overtransport.model;
 
 import java.util.List;
 
-import edu.overtransport.model.road.Road;
+import edu.overtransport.model.road.RoadSegment;
 
 public class Trip {
 	private String destinationName;
-	private List<Road> segmentsToReach;
+	private List<RoadSegment> segmentsToReach;
 	private int currentSegmentIndex = 0;
 
-	public Trip(String name, List<Road> segments) {
+	public Trip(String name, List<RoadSegment> segments) {
 		this.destinationName = name;
 		this.segmentsToReach = segments;
 	}
 
-	public Road getNextSegment() {
+	public RoadSegment getNextSegment() {
 		return segmentsToReach.get(currentSegmentIndex++);
 	}
 

@@ -12,7 +12,7 @@ import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.Trip;
 import edu.overtransport.model.road.CityStreet;
 import edu.overtransport.model.road.Highway;
-import edu.overtransport.model.road.Road;
+import edu.overtransport.model.road.RoadSegment;
 import edu.overtransport.model.road.Track;
 import edu.overtransport.model.vehicles.AnimalPoweredVehicle;
 import edu.overtransport.model.vehicles.Car;
@@ -24,7 +24,7 @@ public class TransportService {
 	public static final String SHORT_TRIP = "SHORT_TRIP";
 	Map<String, Trip> reachableRegion = new HashMap<>();
 	{
-		List<Road> fullFromLondonPathToScotland = new ArrayList<>();
+		List<RoadSegment> fullFromLondonPathToScotland = new ArrayList<>();
 		fullFromLondonPathToScotland.add(new CityStreet("Strand St.", 50));
 		fullFromLondonPathToScotland.add(new CityStreet("Fleet St.", 50));
 		fullFromLondonPathToScotland.add(new Highway("A40", 120));
@@ -34,14 +34,14 @@ public class TransportService {
 		fullFromLondonPathToScotland.add(new CityStreet("Biggar.", 50));
 		Trip longTrip = new Trip("Edinburg", fullFromLondonPathToScotland);
 
-		List<Road> fullFromLondonPathToLiverpool = new ArrayList<>();
+		List<RoadSegment> fullFromLondonPathToLiverpool = new ArrayList<>();
 		fullFromLondonPathToLiverpool.add(new CityStreet("Strand St.", 40));
 		fullFromLondonPathToLiverpool.add(new Highway("A40", 120));
 		fullFromLondonPathToLiverpool.add(new Highway("M6", 170));
 		fullFromLondonPathToLiverpool.add(new CityStreet("Bowring Park.", 40));
 		Trip shortTrip = new Trip("Liverpool", fullFromLondonPathToLiverpool);
 
-		List<Road> fullFromLondonPathToPrincessChristiansFarm = new ArrayList<>();
+		List<RoadSegment> fullFromLondonPathToPrincessChristiansFarm = new ArrayList<>();
 		fullFromLondonPathToPrincessChristiansFarm.add(new CityStreet("Wetminister Bridge.", 50));
 		fullFromLondonPathToPrincessChristiansFarm.add(new Highway("A2", 120));
 		fullFromLondonPathToPrincessChristiansFarm.add(new CityStreet("London Rd.", 60));
@@ -64,7 +64,7 @@ public class TransportService {
 
 	private Vehicle currentVehicle;
 	private Trip currentTrip;
-	private Road currentSegment;
+	private RoadSegment currentSegment;
 
 	public void startTrip(Vehicle vehicle, Trip trip) {
 		this.currentVehicle = vehicle;

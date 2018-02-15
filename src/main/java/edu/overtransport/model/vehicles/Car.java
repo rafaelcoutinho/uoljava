@@ -6,6 +6,10 @@ public abstract class Car implements Vehicle {
 	private int fuelTankPercentageFull = 0;
 	private short currentSpeed = 0;
 
+	protected abstract short getIncSpeedStep();
+
+	protected abstract boolean isAtMaxSpeed();
+
 	public Car(String name) {
 		this.fuelTankPercentageFull = 100;
 	}
@@ -41,10 +45,6 @@ public abstract class Car implements Vehicle {
 		currentSpeed += getIncSpeedStep();
 		return true;
 	}
-
-	protected abstract short getIncSpeedStep();
-
-	protected abstract boolean isAtMaxSpeed();
 
 	@Override
 	public void run() throws NoFuelException {
