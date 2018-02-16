@@ -47,17 +47,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<description>Your knowledge of object-oriented methods has been steadily increasing. Polymorphism, inheritance, abstract classes—all of these techniques (and more) are opening your mind to better and more efficient methods of programming in Java. Now it is time to turn this knowledge into concrete skills. In this Assignment, your group will begin an object-oriented program that you will continue to build on next Week as you continue to learn new things.
-
-To complete this Assignment:
-
-Your group must create a program which shall apply concepts you will learn in Weeks 5 and 6. The requirements of this program are as follows:
-
-Implement at least four classes (showing inheritance) with suitable constructors and methods to set/retrieve values of/from the properties.
-Try to catch all specific exceptions instead of catching them through the parent Exception class. You can also implement your own exception-handling classes as well.
-Create a graphical user interface (GUI) using JFrame to insert, update and view information for at least one of the classes you have created.
-The instances of user-defined classes must be saved in a user-defined data structure supported by Java (to be learned in Week 6), or you can implement your own data structure.
-In addition to the program code, prepare a Word document explaining the fair distribution of tasks within the group members, classes you have created and the working of your program. This document will need to accompany the finished code when it is submitted at the end of Week 6.
-
-Note: You can focus on the final requirement regarding a user-defined data structure in Week 6 when you learn the relevant material from the textbook.</description>
+	<description></description>
 </project>
