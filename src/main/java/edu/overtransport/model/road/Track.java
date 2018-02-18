@@ -34,4 +34,10 @@ public class Track implements RoadSegment {
 
 	}
 
+	@Override
+	public int getSpeedLimit() {
+		// TODO Auto-generated method stub
+		return MAX_TRACK_SPEED;
+	}
+
 }

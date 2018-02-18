@@ -29,5 +29,10 @@ public class CityStreet implements RoadSegment {
 	public String getName() {
 		return name;
 	}
+	
+	public int getSpeedLimit()
+	{
+		return maxSpeed;
+	}
 
 }

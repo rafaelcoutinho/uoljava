@@ -58,5 +58,15 @@ public class TransportService {
 		
 		return state;
 	}
+	
+	public RoadSegment getCurrentSegment()
+	{
+		return currentSegment;
+	}
+	
+	public Trip getCurrentTrip()
+	{
+		return currentTrip;
+	}
 
 }
