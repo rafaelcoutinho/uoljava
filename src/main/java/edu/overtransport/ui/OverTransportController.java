@@ -1,4 +1,4 @@
-package uoljava;
+package edu.overtransport.ui;
 
 import static org.junit.Assert.fail;
 
@@ -75,13 +75,20 @@ public class OverTransportController {
     	service.startTrip(selectedVehicle, selectedDestination);
     	
     	try {
-			selectedVehicle.accelerate();
-			while (service.hasMoreSegments()) {
+			//selectedVehicle.accelerate();
+			if (service.hasMoreSegments()) {
 				
 				service.driveSegment();
 				informationLabel.setText(service.printState());
 			}
-			service.printState();
+			else
+			{
+				informationLabel.setText("You have arrived!");
+				
+				//Start over.
+				initialize();
+			}
+			
 		} catch (TicketingException e) {
 			e.printStackTrace();
 			fail("SUV is slow enough");
