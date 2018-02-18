@@ -1,7 +1,7 @@
 package edu.overtransport.model.vehicles;
 
-public class SUV extends Car {
-	public SUV(String name) {
+public class OffRoad extends Car {
+	public OffRoad(String name) {
 		super(name);
 	}
 

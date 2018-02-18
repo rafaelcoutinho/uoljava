@@ -12,15 +12,15 @@ import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.Trip;
 import edu.overtransport.model.vehicles.Chariot;
-import edu.overtransport.model.vehicles.RancingCar;
-import edu.overtransport.model.vehicles.SUV;
+import edu.overtransport.model.vehicles.RacingCar;
+import edu.overtransport.model.vehicles.OffRoad;
 
 public class BasicTestCases {
 	DestinationDB db = new DestinationDB();
 
 	@Test
 	public void testSlowSUVShortTrip() {
-		SUV suv = new SUV("Jeep");
+		OffRoad suv = new OffRoad("Jeep");
 		TransportService ts = new TransportService();
 		Trip toEdimburg = db.getTrip(DestinationDB.SHORT_TRIP);
 		ts.startTrip(suv, toEdimburg);
@@ -44,7 +44,7 @@ public class BasicTestCases {
 
 	@Test
 	public void testFastSUVShortTrip() {
-		SUV suv = new SUV("Jeep");
+		OffRoad suv = new OffRoad("Jeep");
 		TransportService ts = new TransportService();
 		Trip toEdimburg = db.getTrip(DestinationDB.SHORT_TRIP);
 		ts.startTrip(suv, toEdimburg);
@@ -69,7 +69,7 @@ public class BasicTestCases {
 
 	@Test
 	public void testRacingCarToAFarm() {
-		RancingCar vehicle = new RancingCar("Lamborghini");
+		RacingCar vehicle = new RacingCar("Lamborghini");
 		TransportService ts = new TransportService();
 		Trip toEdimburg = db.getTrip(DestinationDB.TO_A_FARM);
 		ts.startTrip(vehicle, toEdimburg);
@@ -94,7 +94,7 @@ public class BasicTestCases {
 
 	@Test
 	public void testRacingCarToAFarmTooFastForATrack() {
-		RancingCar vehicle = new RancingCar("Lamborghini");
+		RacingCar vehicle = new RacingCar("Lamborghini");
 		TransportService ts = new TransportService();
 		Trip trip = db.getTrip(DestinationDB.TO_A_FARM);
 		ts.startTrip(vehicle, trip);
@@ -123,7 +123,7 @@ public class BasicTestCases {
 
 	@Test
 	public void testRacingCarLongTripWithoutRefueling() {
-		RancingCar vehicle = new RancingCar("Lamborghini");
+		RacingCar vehicle = new RacingCar("Lamborghini");
 		TransportService ts = new TransportService();
 		Trip toEdimburg = db.getTrip(DestinationDB.LONG_TRIP);
 		ts.startTrip(vehicle, toEdimburg);

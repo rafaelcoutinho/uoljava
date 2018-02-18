@@ -10,8 +10,8 @@ import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.Trip;
 import edu.overtransport.model.vehicles.Chariot;
-import edu.overtransport.model.vehicles.RancingCar;
-import edu.overtransport.model.vehicles.SUV;
+import edu.overtransport.model.vehicles.RacingCar;
+import edu.overtransport.model.vehicles.OffRoad;
 import edu.overtransport.model.vehicles.Vehicle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -149,14 +149,14 @@ public class OverTransportController {
 	    	
 	    	case "Racing Car":
 	    	{
-	    		RancingCar suv = new RancingCar(vehicleName);
+	    		RacingCar suv = new RacingCar(vehicleName);
 	    		selectedVehicle = suv;	   
 	    		break;
 	    	}
 	    	
 	    	case "SUV":
 	    	{
-	    		SUV suv = new SUV(vehicleName);
+	    		OffRoad suv = new OffRoad(vehicleName);
 	    		selectedVehicle = suv;	    		
 	    		break;
 	    	}

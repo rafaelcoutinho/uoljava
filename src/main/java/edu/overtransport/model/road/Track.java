@@ -3,7 +3,7 @@ package edu.overtransport.model.road;
 import edu.overtransport.exception.BrokenCar;
 import edu.overtransport.exception.LackOfResourcesException;
 import edu.overtransport.exception.UnsuitableVehicleException;
-import edu.overtransport.model.vehicles.RancingCar;
+import edu.overtransport.model.vehicles.RacingCar;
 import edu.overtransport.model.vehicles.Vehicle;
 
 public class Track implements RoadSegment {
@@ -27,7 +27,7 @@ public class Track implements RoadSegment {
 					+ " km/h, above the 30km/h that is safe.");
 
 		}
-		if (vehicle instanceof RancingCar) {
+		if (vehicle instanceof RacingCar) {
 			throw new UnsuitableVehicleException("Racing Car is not adapted for a Track");
 		}
 		vehicle.run();

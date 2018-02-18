@@ -7,6 +7,9 @@ public class Chariot extends AnimalPoweredVehicle {
 		super(numberOfAnimals);
 		if (numberOfAnimals == 0) {
 			throw new IllegalArgumentException("At least one horse is needed");
+		}else if (numberOfAnimals>10) {
+			throw new IllegalArgumentException("Too many horses");
+				
 		}
 	}
 

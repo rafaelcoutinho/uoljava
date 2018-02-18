@@ -1,9 +1,9 @@
 package edu.overtransport.model.vehicles;
 
-public class RancingCar extends Car {
+public class RacingCar extends Car {
 	private static final short MAX_RANCING_CAR_SPEED = 200;
 
-	public RancingCar(String name) {
+	public RacingCar(String name) {
 		super(name);
 	}
 
