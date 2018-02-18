@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 /**
  * Entry point for the executable Jar
  * 
- * @author coutinho
+ * @author Damian Chambers
  *
  */
 public class Main extends Application {

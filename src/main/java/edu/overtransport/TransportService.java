@@ -41,17 +41,22 @@ public class TransportService {
 		currentSegment.run(currentVehicle);
 	}
 
-	public void printState() {
-		System.out.println("Speed             : " + currentVehicle.getSpeed());
+	public String printState() {
+		
+		String state = "Speed             : " + currentVehicle.getSpeed() + " \n";	
+		
 		if (currentVehicle instanceof Car) {
-			System.out.println("Fuel  		  : " + ((Car) currentVehicle).getFuelStatus() + "%");
+			state+="Fuel  		  : " + ((Car) currentVehicle).getFuelStatus() + "% \n";
 		} else if (currentVehicle instanceof AnimalPoweredVehicle) {
-			System.out.println("Animal Tiredness  : " + ((AnimalPoweredVehicle) currentVehicle).getTiredness() + "%");
+			state+="Animal Tiredness  : " + ((AnimalPoweredVehicle) currentVehicle).getTiredness() + "% \n";
 		}
-		System.out.println("Segment type      :" + currentSegment.getClass().getSimpleName());
-		System.out.println("Segment name      :" + currentSegment.getName());
-		System.out.println("Trip Complete     : " + currentTrip.getPercentageComplete() + "%");
-		System.out.println("---");
+		
+		state+="Segment type      :" + currentSegment.getClass().getSimpleName() + " \n";
+		state+="Segment name      :" + currentSegment.getName() + " \n";
+		state+="Trip Complete     : " + currentTrip.getPercentageComplete() + "% \n";
+		state+="---";
+		
+		return state;
 	}
 
 }
