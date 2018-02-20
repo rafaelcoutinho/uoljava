@@ -2,8 +2,8 @@ package edu.overtransport.ui;
 
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.overtransport.DestinationDB;
 import edu.overtransport.TransportService;
@@ -11,12 +11,11 @@ import edu.overtransport.exception.LackOfResourcesException;
 import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.Trip;
-import edu.overtransport.model.road.RoadSegment;
 import edu.overtransport.model.vehicles.AnimalPoweredVehicle;
 import edu.overtransport.model.vehicles.Car;
 import edu.overtransport.model.vehicles.Chariot;
-import edu.overtransport.model.vehicles.RacingCar;
 import edu.overtransport.model.vehicles.OffRoad;
+import edu.overtransport.model.vehicles.RacingCar;
 import edu.overtransport.model.vehicles.Vehicle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +30,30 @@ import javafx.scene.control.TextField;
 public class OverTransportController {
 	
 	//Add Items to Combobox
-	ObservableList<String> destinationList = FXCollections.observableArrayList("Scotland", "Liverpool", "Christians Farm");	
+	enum DestinationNames {
+		Scotland("Scotland",DestinationDB.LONG_TRIP),Liverpool("Liverpool",DestinationDB.SHORT_TRIP),Christians("Christians Farm",DestinationDB.LONG_TRIP);
+		String label; String dbKey;
+		DestinationNames(String label, String dbKey){
+			this.label=label;
+			this.dbKey=dbKey;
+		}
+		static DestinationNames fromLabel(String l) {
+			for (int i = 0; i < values().length; i++) {
+				if(values()[i].label.equals(l)) {
+					return values()[i];
+				}
+			}
+			return null;
+		}
+		public String getLabel() {
+			return label;
+		}
+		public String getDbKey() {
+			return dbKey;
+		}
+	}
+	ObservableList<String> destinationList = FXCollections.observableArrayList(DestinationNames.Scotland.getLabel(),DestinationNames.Liverpool.getLabel(), DestinationNames.Christians.getLabel());	
+	
 	ObservableList<String> vehicleList = FXCollections.observableArrayList("Chariot", "Racing Car", "SUV");
 	TransportService service = new TransportService();  
 	
@@ -74,7 +96,7 @@ public class OverTransportController {
     	vehicleComboBox.setValue("Chariot");
     	vehicleComboBox.setItems(vehicleList);
     	
-    	destinationComboBox.setValue("Scotland");
+    	destinationComboBox.setValue(DestinationNames.Scotland.getLabel());
     	destinationComboBox.setItems(destinationList);  
     	
     	setCurrentTrip();    	
@@ -83,7 +105,7 @@ public class OverTransportController {
     @FXML
     void startJourney(ActionEvent event)
     {   	
-    	
+    	startButton.setText("Drive more");
     	service.startTrip(selectedVehicle, selectedDestination);
     	
     	try {
@@ -118,37 +140,12 @@ public class OverTransportController {
     private void setCurrentTrip() 
     {
     	//set current trip based on selection in combo box.
-    	String destination = destinationComboBox.getSelectionModel().getSelectedItem();
+    	DestinationNames dest = DestinationNames.fromLabel(destinationComboBox.getSelectionModel().getSelectedItem());
+    	selectedDestination = db.getTrip(dest.getDbKey());
     	String vehicle = vehicleComboBox.getSelectionModel().getSelectedItem();
     	String vehicleName = vehicleNameTextField.getText() != "" ? vehicleNameTextField.getText() : "No Name";    	
     	
     	
-    	switch(destination.trim())
-    	{
-	    	case "Scotland" :
-	    	{
-	    		selectedDestination = db.getTrip(DestinationDB.LONG_TRIP);
-	    		break;
-	    	}
-	    	
-	    	case "Liverpool" :
-	    	{
-	    		selectedDestination = db.getTrip(DestinationDB.SHORT_TRIP);
-	    		break;
-	    	}
-	    	
-	    	case "Christians Farm":
-	    	{
-	    		selectedDestination = db.getTrip(DestinationDB.TO_A_FARM);
-	    		break;
-	    	}
-	    	
-	    	default:
-	    	{
-	    		selectedDestination = db.getTrip(DestinationDB.LONG_TRIP);
-	    		break;
-	    	}
-    	}
     	   	    	
     	
     	switch(vehicle.trim())
