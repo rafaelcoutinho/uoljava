@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 import edu.overtransport.DestinationDB;
 import edu.overtransport.TransportService;
@@ -25,192 +26,356 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
 public class OverTransportController {
-	
-	//Add Items to Combobox
-	enum DestinationNames {
-		Scotland("Scotland",DestinationDB.LONG_TRIP),Liverpool("Liverpool",DestinationDB.SHORT_TRIP),Christians("Christians Farm",DestinationDB.LONG_TRIP);
-		String label; String dbKey;
-		DestinationNames(String label, String dbKey){
-			this.label=label;
-			this.dbKey=dbKey;
+	enum VehicleTypes {
+		Chariot("Chariot"), RacingCar("Racing Car"), Offroad("Off-road");
+		String label;
+
+		VehicleTypes(String label) {
+			this.label = label;
 		}
-		static DestinationNames fromLabel(String l) {
+
+		static VehicleTypes fromLabel(String l) {
 			for (int i = 0; i < values().length; i++) {
-				if(values()[i].label.equals(l)) {
+				if (values()[i].label.equals(l)) {
 					return values()[i];
 				}
 			}
 			return null;
 		}
+
 		public String getLabel() {
 			return label;
 		}
+
+	}
+
+	ObservableList<String> vehicleList = FXCollections.observableArrayList(VehicleTypes.Chariot.getLabel(),
+			VehicleTypes.RacingCar.getLabel(), VehicleTypes.Offroad.getLabel());
+
+	enum DestinationNames {
+		Scotland("Scotland", DestinationDB.LONG_TRIP), Liverpool("Liverpool",
+				DestinationDB.SHORT_TRIP), Christians("Christians Farm", DestinationDB.LONG_TRIP);
+		String label;
+		String dbKey;
+
+		DestinationNames(String label, String dbKey) {
+			this.label = label;
+			this.dbKey = dbKey;
+		}
+
+		static DestinationNames fromLabel(String l) {
+			for (int i = 0; i < values().length; i++) {
+				if (values()[i].label.equals(l)) {
+					return values()[i];
+				}
+			}
+			return null;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
 		public String getDbKey() {
 			return dbKey;
 		}
 	}
-	ObservableList<String> destinationList = FXCollections.observableArrayList(DestinationNames.Scotland.getLabel(),DestinationNames.Liverpool.getLabel(), DestinationNames.Christians.getLabel());	
-	
-	ObservableList<String> vehicleList = FXCollections.observableArrayList("Chariot", "Racing Car", "SUV");
-	TransportService service = new TransportService();  
-	
+
+	// Add Items to Combobox
+	ObservableList<String> destinationList = FXCollections.observableArrayList(DestinationNames.Scotland.getLabel(),
+			DestinationNames.Liverpool.getLabel(), DestinationNames.Christians.getLabel());
+
+	TransportService service = new TransportService();
 	DestinationDB db = new DestinationDB();
-	
+
 	private Trip selectedDestination;
-	
+
 	private Vehicle selectedVehicle;
 
-    @FXML
-    private Button refuelButton;
+	@FXML
+	private Button refuelButton;
 
-    @FXML
-    private Button startButton;
+	@FXML
+	private Button startButton;
 
-    @FXML
-    private Button accelerateButton;
-    
-    @FXML
-    private Label informationLabel;
-    
-    @FXML
-    private Label labelTripInformation;
-    
-    @FXML
-    private ComboBox<String> destinationComboBox;
-    
-    @FXML
-    private ComboBox<String> vehicleComboBox;
-    
-    @FXML
-    private ProgressBar fuelProgressBar;
-    
-    @FXML
-    private TextField vehicleNameTextField;
+	@FXML
+	private Button accelerateButton;
 
-    @FXML
-    public void initialize() {  
-    	
-    	vehicleComboBox.setValue("Chariot");
-    	vehicleComboBox.setItems(vehicleList);
-    	
-    	destinationComboBox.setValue(DestinationNames.Scotland.getLabel());
-    	destinationComboBox.setItems(destinationList);  
-    	
-    	setCurrentTrip();    	
-    }
-    
-    @FXML
-    void startJourney(ActionEvent event)
-    {   	
-    	startButton.setText("Drive more");
-    	service.startTrip(selectedVehicle, selectedDestination);
-    	
-    	try {
-			selectedVehicle.accelerate();
-			if (service.hasMoreSegments()) {				
-				service.driveSegment();								
-				informationLabel.setText(service.printState());				
-				setFuelProgress(false);	
-				
-				labelTripInformation.setText("Speed Limit: " + Integer.toString(service.getCurrentSegment().getSpeedLimit())+ "\n");
-				
+	@FXML
+	private Button brakeButton;
+
+	@FXML
+	private Label informationLabel;
+
+	@FXML
+	private Label labelTripInformation;
+
+	@FXML
+	private ComboBox<String> destinationComboBox;
+
+	@FXML
+	private ComboBox<String> vehicleComboBox;
+
+	@FXML
+	private ProgressBar fuelProgressBar;
+
+	@FXML
+	private TextField vehicleNameTextField;
+
+
+	boolean onGoingTrip = false;
+	@FXML
+	public void initialize() {
+
+		// reset combobox to index 0
+		vehicleComboBox.setValue(vehicleList.get(0));
+		vehicleComboBox.setItems(vehicleList);
+
+		destinationComboBox.setValue(destinationList.get(0));
+		destinationComboBox.setItems(destinationList);
+
+		// clear
+		vehicleNameTextField.setText("");
+		informationLabel.setText("");
+		labelTripInformation.setText("");
+
+		
+	}
+
+
+	@FXML
+	void startJourney(ActionEvent event) {
+
+		if (!onGoingTrip) {
+			if(!setCurrentTrip()) {
+				return;
 			}
-			else
-			{
-				informationLabel.setText("You have arrived!");				
-				//Start over.
+			service.startTrip(selectedVehicle, selectedDestination);
+			selectedVehicle.accelerate();// accelerate once
+			onGoingTrip = true;
+			String startButtonLabel ="Drive next..";
+			changeUIMode(startButtonLabel);
+			
+		}
+
+		try {
+
+			if (service.hasMoreSegments()) {
+				service.driveSegment();
+				informationLabel.setText(service.printState());
+				setFuelProgress(false);
+
+				String segmentInfo = "Speed Limit: " + Integer.toString(service.getCurrentSegment().getSpeedLimit())
+						+ "\n";
+
+				labelTripInformation.setText(segmentInfo);
+			} else {
+				informationLabel.setText("You have arrived!");
+				onGoingTrip = false;
+				changeUIMode("Start");
+				// Start over.
 				initialize();
 			}
-			
+
 		} catch (TicketingException e) {
-			e.printStackTrace();
-			fail("SUV is slow enough");
+			JOptionPane.showMessageDialog(null, "You just got a ticket for speeding. Please reduce your speed.",
+					"Speeding Ticket", JOptionPane.WARNING_MESSAGE);
+
 		} catch (UnsuitableVehicleException e) {
-			e.printStackTrace();
-			fail("SUV is good for this trip");
+
+			JOptionPane.showMessageDialog(null,
+					"This vehicle type is not suitable for this road segment. " + e.getMessage(), "Unsuitable Vehicle",
+					JOptionPane.WARNING_MESSAGE);
+
+			// start over
+			initialize();
+
 		} catch (LackOfResourcesException e) {
-			e.printStackTrace();
+
+			String refuelMessage = "";
+			String refuelTitle = "";
+			String refuelOption = "";
+
+			if (selectedVehicle instanceof Car) {
+				refuelMessage = "You ran out of fuel! What would you like to do?";
+				refuelTitle = "Out of Fuel";
+				refuelOption = "Refuel";
+			} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
+				refuelMessage = "Poor horse! Your horse needs rest. What do you want to do?";
+				refuelTitle = "Horse is tired!";
+				refuelOption = "Feed the Horse";
+			}
+
+			Object[] refueloptions = { refuelOption, "Cancel Trip" };
+
+			int result = JOptionPane.showOptionDialog(null, refuelMessage, refuelTitle, JOptionPane.YES_NO_OPTION,
+					JOptionPane.PLAIN_MESSAGE, null, refueloptions, null);
+
+			if (result == JOptionPane.YES_OPTION) {
+				refuel();
+			} else {
+				// start over
+				initialize();
+			}
 		}
-    }
-    
-    @FXML
-    private void setCurrentTrip() 
+	}
+
+
+	private void changeUIMode(String startButtonLabel) {
+		startButton.setText(startButtonLabel);
+		accelerateButton.setDisable(!onGoingTrip);	
+		brakeButton.setDisable(!onGoingTrip);
+		refuelButton.setDisable(!onGoingTrip);
+		
+		destinationComboBox.setDisable(onGoingTrip);
+		vehicleComboBox.setDisable(onGoingTrip);
+		vehicleNameTextField.setDisable(onGoingTrip);
+	}
+
+	@FXML
+    private boolean setCurrentTrip() 
     {
     	//set current trip based on selection in combo box.
-    	DestinationNames dest = DestinationNames.fromLabel(destinationComboBox.getSelectionModel().getSelectedItem());
+    	String tripSelName = destinationComboBox.getSelectionModel().getSelectedItem();
+    	DestinationNames dest = DestinationNames.fromLabel(tripSelName);
+    	if(dest==null) {
+    		//show error
+    		JOptionPane.showMessageDialog(null,
+					"Please select a destination", "Invalid input",
+					JOptionPane.ERROR_MESSAGE);
+    		return false;
+    	}
     	selectedDestination = db.getTrip(dest.getDbKey());
     	String vehicle = vehicleComboBox.getSelectionModel().getSelectedItem();
-    	String vehicleName = vehicleNameTextField.getText() != "" ? vehicleNameTextField.getText() : "No Name";    	
-    	
+    	VehicleTypes vType = VehicleTypes.fromLabel(vehicle);
+    	if(vType==null) {
+    		//show error
+    		JOptionPane.showMessageDialog(null,
+					"Please select a vehicle", "Invalid input",
+					JOptionPane.ERROR_MESSAGE);
+    		return false;
+    	}
+    	String vehicleName = vehicleNameTextField.getText() != "" ? vehicleNameTextField.getText() : "No Name";  
     	
     	   	    	
     	
-    	switch(vehicle.trim())
+    	switch(vType)
     	{
 	    	
-	    	case "Chariot":
+	    	case Chariot:
 	    	{
-	    		Chariot suv = new Chariot(1);
-	    		selectedVehicle = suv;	   
+	    		Integer horses = null;
+	    		do {
+	    			String number = JOptionPane.showInputDialog(null, "You have selected a Chariot, please enter the number of horses you want on it.", "Horse power", JOptionPane.QUESTION_MESSAGE);
+	    			try {
+	    				horses=Integer.parseInt(number);
+	    			}catch (NumberFormatException e) {
+	    				int opt = JOptionPane.showConfirmDialog(null, "Please enter a valid numeric value. Want to try again?",
+	    						"Speeding Ticket",JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+	    				System.out.println(opt);
+	    				if(opt==2) {
+	    					return false;
+	    				}
+					}
+	    			
+	    			
+	    		}while(horses==null);
+	    		
+	    		selectedVehicle = new Chariot(horses);
 	    		break;
 	    	}
 	    	
-	    	case "Racing Car":
+	    	case RacingCar:
 	    	{
-	    		RacingCar suv = new RacingCar(vehicleName);
-	    		selectedVehicle = suv;	   
+	    		selectedVehicle = new RacingCar(vehicleName);
 	    		break;
 	    	}
 	    	
-	    	case "SUV":
+	    	case Offroad:
 	    	{
-	    		OffRoad suv = new OffRoad(vehicleName);
-	    		selectedVehicle = suv;	    		
+	    		selectedVehicle = new OffRoad(vehicleName);   		
 	    		break;
 	    	}
+	    	default:
+	    		//show msg
+	    		JOptionPane.showMessageDialog(null,
+						"Invalid vehicle", "Invalid input",
+						JOptionPane.ERROR_MESSAGE);
+	    		return false;
     	}
     	setFuelProgress(true);
+    	return true;
     }
-    
-    
-    @FXML
-    void refuelVehicle(ActionEvent even) {
-    	if (selectedVehicle instanceof Car) {
-    		((Car) selectedVehicle).refuel();
-    		setFuelProgress(false);    		
+
+	@FXML
+	void refuelVehicle(ActionEvent even) {
+		refuel();
+		setFuelProgress(false);
+	}
+
+	void refuel() {
+		if (selectedVehicle instanceof Car) {
+			((Car) selectedVehicle).refuel();
 			
+
 		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
 			((AnimalPoweredVehicle) selectedVehicle).feed();
-			setFuelProgress(false);
 		}
-    }
-    
-    void setFuelProgress(Boolean reset)
-    {
-    	
-    	double fuelPercentage = 0.0;    	
-    	
-    	if (selectedVehicle instanceof Car) {
-			fuelPercentage = ((Car) selectedVehicle).getFuelStatus();										
-			
+	}
+
+	void setFuelProgress(Boolean reset) {
+
+		double fuelPercentage = 0.0;
+
+		if (selectedVehicle instanceof Car) {
+			fuelPercentage = ((Car) selectedVehicle).getFuelStatus();
+
 		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
-			fuelPercentage = ((AnimalPoweredVehicle) selectedVehicle).getTiredness();					
+			fuelPercentage = ((AnimalPoweredVehicle) selectedVehicle).getTiredness();
 		}
-		fuelProgressBar.setProgress(fuelPercentage/100);
-		
-		//update information
-		
-		if (!reset)
-    	{
+
+		fuelProgressBar.setProgress(fuelPercentage / 100);
+
+		// update information
+
+		if (!reset) {
 			informationLabel.setText(service.printState());
-    	}
-		
-    }
+		}
+
+	}
+
+	@FXML
+	void accelerateButtonPressed(ActionEvent event) {
+		accelerate();
+		informationLabel.setText(service.printState());
+	}
+
+	@FXML
+	void brakeButtonPressed(ActionEvent even) {
+		brake();
+		informationLabel.setText(service.printState());
+	}
+
+	void accelerate() {
+		if (selectedVehicle instanceof Car) {
+			((Car) selectedVehicle).accelerate();
+
+		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
+			((AnimalPoweredVehicle) selectedVehicle).accelerate();
+		}
+	}
+
+	void brake() {
+		if (selectedVehicle instanceof Car) {
+			((Car) selectedVehicle).brake();
+
+		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
+			((AnimalPoweredVehicle) selectedVehicle).brake();
+		}
+	}
 
 }
-
-
-

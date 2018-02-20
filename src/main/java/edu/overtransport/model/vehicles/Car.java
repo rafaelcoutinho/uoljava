@@ -33,7 +33,6 @@ public abstract class Car implements Vehicle {
 
 	@Override
 	public short getSpeed() {
-
 		return currentSpeed;
 	}
 

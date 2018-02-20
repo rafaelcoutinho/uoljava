@@ -1,19 +1,10 @@
 package edu.overtransport;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import edu.overtransport.exception.LackOfResourcesException;
 import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.Trip;
-import edu.overtransport.model.road.CityStreet;
-import edu.overtransport.model.road.Highway;
 import edu.overtransport.model.road.RoadSegment;
-import edu.overtransport.model.road.Track;
 import edu.overtransport.model.vehicles.AnimalPoweredVehicle;
 import edu.overtransport.model.vehicles.Car;
 import edu.overtransport.model.vehicles.Vehicle;
@@ -43,18 +34,17 @@ public class TransportService {
 
 	public String printState() {
 		
-		String state = "Speed             : " + currentVehicle.getSpeed() + " \n";	
+		String state = "Speed \t\t:\t" + currentVehicle.getSpeed() + " km/h \n";	
 		
 		if (currentVehicle instanceof Car) {
-			state+="Fuel  		  : " + ((Car) currentVehicle).getFuelStatus() + "% \n";
+			state+="Fuel \t\t\t:\t" + ((Car) currentVehicle).getFuelStatus() + "% \n";
 		} else if (currentVehicle instanceof AnimalPoweredVehicle) {
-			state+="Animal Tiredness  : " + ((AnimalPoweredVehicle) currentVehicle).getTiredness() + "% \n";
+			state+="Animal Strength \t:\t" + ((AnimalPoweredVehicle) currentVehicle).getTiredness() + "% \n";
 		}
 		
-		state+="Segment type      :" + currentSegment.getClass().getSimpleName() + " \n";
-		state+="Segment name      :" + currentSegment.getName() + " \n";
-		state+="Trip Complete     : " + currentTrip.getPercentageComplete() + "% \n";
-		state+="---";
+		state+="Street \t\t:\t" + currentSegment.getClass().getSimpleName() + " \n";
+		state+="Name \t\t:\t" + currentSegment.getName() + " \n";
+		state+="% Complete \t:\t" + currentTrip.getPercentageComplete() + "% \n";
 		
 		return state;
 	}

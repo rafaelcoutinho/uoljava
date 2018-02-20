@@ -1,3 +1,6 @@
+.classpath
+.settings/
+target/
 # Compiled class file
 *.class
 
@@ -22,5 +25,3 @@
 hs_err_pid*
 /target/
 
-.classpath*
-.settings/
