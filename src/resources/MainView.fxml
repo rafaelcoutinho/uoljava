@@ -39,9 +39,9 @@
          </font>
       </Label>
       <Label text="Destination" GridPane.rowIndex="2" />
-      <ComboBox fx:id="destinationComboBox" onAction="#setCurrentTrip" prefWidth="150.0" GridPane.rowIndex="3" />
+      <ComboBox fx:id="destinationComboBox" prefWidth="150.0" GridPane.rowIndex="3" />
       <Label text="Type of Vehicle" GridPane.rowIndex="4" />
-      <ComboBox fx:id="vehicleComboBox" onAction="#setCurrentTrip" prefWidth="150.0" GridPane.rowIndex="5" />
+      <ComboBox fx:id="vehicleComboBox" prefWidth="150.0" GridPane.rowIndex="5" />
       <ProgressBar fx:id="fuelProgressBar" prefWidth="200.0" progress="0.0" GridPane.rowIndex="9" />
       <Label text="Fuel Level/Animal Strength" GridPane.rowIndex="8" />
       <Pane prefHeight="71.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
@@ -50,7 +50,7 @@
          </children>
       </Pane>
       <Label text="Vehicle Name" GridPane.rowIndex="6" />
-      <TextField fx:id="vehicleNameTextField" onAction="#setCurrentTrip" GridPane.rowIndex="7" />
+      <TextField fx:id="vehicleNameTextField"  GridPane.rowIndex="7" />
       <Label fx:id="labelTripInformation" prefHeight="89.0" prefWidth="300.0" text="Trip Information" textFill="#8d0808" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2147483647" />
       
    </children>

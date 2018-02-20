@@ -1,9 +1,5 @@
 package edu.overtransport.ui;
 
-import static org.junit.Assert.fail;
-
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JOptionPane;
 
 import edu.overtransport.DestinationDB;
@@ -26,7 +22,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
 public class OverTransportController {
@@ -148,8 +143,8 @@ public class OverTransportController {
 
 
 	@FXML
-	void startJourney(ActionEvent event) {
-
+	synchronized void  startJourney(ActionEvent event) {
+		
 		if (!onGoingTrip) {
 			if(!setCurrentTrip()) {
 				return;
@@ -174,11 +169,11 @@ public class OverTransportController {
 
 				labelTripInformation.setText(segmentInfo);
 			} else {
+				JOptionPane.showMessageDialog(null, "You have arrived!",
+						"Trip status", JOptionPane.INFORMATION_MESSAGE);
 				informationLabel.setText("You have arrived!");
 				onGoingTrip = false;
 				changeUIMode("Start");
-				// Start over.
-				initialize();
 			}
 
 		} catch (TicketingException e) {
@@ -192,7 +187,8 @@ public class OverTransportController {
 					JOptionPane.WARNING_MESSAGE);
 
 			// start over
-			initialize();
+			onGoingTrip = false;
+			changeUIMode("Start");
 
 		} catch (LackOfResourcesException e) {
 
@@ -219,7 +215,8 @@ public class OverTransportController {
 				refuel();
 			} else {
 				// start over
-				initialize();
+				onGoingTrip = false;
+				changeUIMode("Start");
 			}
 		}
 	}

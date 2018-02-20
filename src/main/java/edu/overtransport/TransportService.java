@@ -21,6 +21,7 @@ public class TransportService {
 	public void startTrip(Vehicle vehicle, Trip trip) {
 		this.currentVehicle = vehicle;
 		this.currentTrip = trip;
+		currentTrip.start();
 	}
 
 	public boolean hasMoreSegments() {
