@@ -53,7 +53,7 @@ public class OverTransportController {
 
 	enum DestinationNames {
 		Scotland("Scotland", DestinationDB.LONG_TRIP), Liverpool("Liverpool",
-				DestinationDB.SHORT_TRIP), Christians("Christians Farm", DestinationDB.LONG_TRIP);
+				DestinationDB.SHORT_TRIP), Christians("Christians Farm", DestinationDB.TO_A_FARM);
 		String label;
 		String dbKey;
 
@@ -153,7 +153,7 @@ public class OverTransportController {
 			selectedVehicle.accelerate();// accelerate once
 			onGoingTrip = true;
 			String startButtonLabel ="Drive next..";
-			changeUIMode(startButtonLabel);
+			changeUIMode(startButtonLabel,onGoingTrip);
 			
 		}
 
@@ -173,7 +173,7 @@ public class OverTransportController {
 						"Trip status", JOptionPane.INFORMATION_MESSAGE);
 				informationLabel.setText("You have arrived!");
 				onGoingTrip = false;
-				changeUIMode("Start");
+				changeUIMode("Start",onGoingTrip);
 			}
 
 		} catch (TicketingException e) {
@@ -188,7 +188,7 @@ public class OverTransportController {
 
 			// start over
 			onGoingTrip = false;
-			changeUIMode("Start");
+			changeUIMode("Start",onGoingTrip);
 
 		} catch (LackOfResourcesException e) {
 
@@ -216,21 +216,21 @@ public class OverTransportController {
 			} else {
 				// start over
 				onGoingTrip = false;
-				changeUIMode("Start");
+				changeUIMode("Start",onGoingTrip);
 			}
 		}
 	}
 
 
-	private void changeUIMode(String startButtonLabel) {
+	private void changeUIMode(String startButtonLabel,boolean tripGoingOn) {
 		startButton.setText(startButtonLabel);
-		accelerateButton.setDisable(!onGoingTrip);	
-		brakeButton.setDisable(!onGoingTrip);
-		refuelButton.setDisable(!onGoingTrip);
+		accelerateButton.setDisable(!tripGoingOn);	
+		brakeButton.setDisable(!tripGoingOn);
+		refuelButton.setDisable(!tripGoingOn);
 		
-		destinationComboBox.setDisable(onGoingTrip);
-		vehicleComboBox.setDisable(onGoingTrip);
-		vehicleNameTextField.setDisable(onGoingTrip);
+		destinationComboBox.setDisable(tripGoingOn);
+		vehicleComboBox.setDisable(tripGoingOn);
+		vehicleNameTextField.setDisable(tripGoingOn);
 	}
 
 	@FXML
