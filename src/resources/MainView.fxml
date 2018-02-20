@@ -28,7 +28,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Accelerate" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+      <Button fx:id="accelerateButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accelerateButtonPressed" text="Accelerate" GridPane.columnIndex="1" GridPane.rowIndex="9" />
       <Button fx:id="refuelButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#refuelVehicle" text="Refuel" GridPane.columnIndex="3" GridPane.rowIndex="9" />
       <Button fx:id="startButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#startJourney" text="Start" GridPane.columnIndex="4" GridPane.rowIndex="9" />
       <Label text="Starting Point:" />
@@ -50,7 +50,8 @@
       </Pane>
       <Label text="Vehicle Name" GridPane.rowIndex="6" />
       <TextField fx:id="vehicleNameTextField" onAction="#setCurrentTrip" GridPane.rowIndex="7" />
-      <Label fx:id="labelTripInformation" prefHeight="46.0" prefWidth="300.0" text="Trip Information" textFill="#8d0808" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2147483647" />
+      <Label fx:id="labelTripInformation" prefHeight="89.0" prefWidth="300.0" text="Trip Information" textFill="#8d0808" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2147483647" />
+      <Button fx:id="buttonBrake" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#brakeButtonPressed" text="Brake" GridPane.columnIndex="2" GridPane.rowIndex="9" />
    </children>
    <padding>
       <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />

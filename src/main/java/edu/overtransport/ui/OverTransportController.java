@@ -1,9 +1,7 @@
 package edu.overtransport.ui;
-
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.JOptionPane;
 
 import edu.overtransport.DestinationDB;
 import edu.overtransport.TransportService;
@@ -11,7 +9,6 @@ import edu.overtransport.exception.LackOfResourcesException;
 import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.Trip;
-import edu.overtransport.model.road.RoadSegment;
 import edu.overtransport.model.vehicles.AnimalPoweredVehicle;
 import edu.overtransport.model.vehicles.Car;
 import edu.overtransport.model.vehicles.Chariot;
@@ -26,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
 public class OverTransportController {
@@ -50,6 +48,9 @@ public class OverTransportController {
     @FXML
     private Button accelerateButton;
     
+    @FXML 
+    private Button breakButton;
+    
     @FXML
     private Label informationLabel;
     
@@ -63,19 +64,26 @@ public class OverTransportController {
     private ComboBox<String> vehicleComboBox;
     
     @FXML
-    private ProgressBar fuelProgressBar;
-    
-    @FXML
-    private TextField vehicleNameTextField;
+    private ProgressBar fuelProgressBar;    
 
+    @FXML
+    private TextField vehicleNameTextField;    
+ 
+    
     @FXML
     public void initialize() {  
     	
+    	//reset combobox to index 0
     	vehicleComboBox.setValue("Chariot");
     	vehicleComboBox.setItems(vehicleList);
     	
     	destinationComboBox.setValue("Scotland");
     	destinationComboBox.setItems(destinationList);  
+    	
+    	//clear
+    	vehicleNameTextField.setText("");
+    	informationLabel.setText("");
+    	labelTripInformation.setText("");
     	
     	setCurrentTrip();    	
     }
@@ -83,6 +91,7 @@ public class OverTransportController {
     @FXML
     void startJourney(ActionEvent event)
     {   	
+    	String segmentInfo;
     	
     	service.startTrip(selectedVehicle, selectedDestination);
     	
@@ -93,8 +102,9 @@ public class OverTransportController {
 				informationLabel.setText(service.printState());				
 				setFuelProgress(false);	
 				
-				labelTripInformation.setText("Speed Limit: " + Integer.toString(service.getCurrentSegment().getSpeedLimit())+ "\n");
+				segmentInfo = "Speed Limit: " + Integer.toString(service.getCurrentSegment().getSpeedLimit())+ "\n";	
 				
+				labelTripInformation.setText(segmentInfo);				
 			}
 			else
 			{
@@ -104,13 +114,47 @@ public class OverTransportController {
 			}
 			
 		} catch (TicketingException e) {
-			e.printStackTrace();
-			fail("SUV is slow enough");
+			JOptionPane.showMessageDialog(null, "You just got a ticket for speeding. Please reduce your speed.", "Speeding Ticket", JOptionPane.WARNING_MESSAGE);
+			
 		} catch (UnsuitableVehicleException e) {
-			e.printStackTrace();
-			fail("SUV is good for this trip");
+			
+			JOptionPane.showMessageDialog(null, "This vehicle type is not suitable for the journey. " + e.getMessage(), "Unsuitable Vehicle", JOptionPane.WARNING_MESSAGE);
+			
+			//start over
+			initialize();
+			
 		} catch (LackOfResourcesException e) {
-			e.printStackTrace();
+			
+			String refuelMessage = "";
+			String refuelTitle = "";
+			String refuelOption = "";
+			
+			if (selectedVehicle instanceof Car) {
+				refuelMessage = "You ran out of fuel! What would you like to do?";
+				refuelTitle = "Out of Fuel";
+				refuelOption = "Refuel";
+			} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
+				refuelMessage = "Poor horse! Your horse needs rest. What do you want to do?";
+				refuelTitle = "Horse is tired!";
+				refuelOption = "Feed the Horse";
+			}
+			
+			
+			
+			Object[] refueloptions = { refuelOption , "Cancel Trip"};
+		    
+		    int result = JOptionPane.showOptionDialog(null, refuelMessage, refuelTitle,
+		            JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+		            null, refueloptions, null);
+		    
+		    if (result == JOptionPane.YES_OPTION){
+		    	refuel();
+		    }
+		    else
+		    {
+		    	//start over
+		    	initialize();
+		    }
 		}
     }
     
@@ -120,8 +164,7 @@ public class OverTransportController {
     	//set current trip based on selection in combo box.
     	String destination = destinationComboBox.getSelectionModel().getSelectedItem();
     	String vehicle = vehicleComboBox.getSelectionModel().getSelectedItem();
-    	String vehicleName = vehicleNameTextField.getText() != "" ? vehicleNameTextField.getText() : "No Name";    	
-    	
+    	String vehicleName = vehicleNameTextField.getText() != "" ? vehicleNameTextField.getText() : "No Name";  
     	
     	switch(destination.trim())
     	{
@@ -181,6 +224,11 @@ public class OverTransportController {
     
     @FXML
     void refuelVehicle(ActionEvent even) {
+    	refuel();
+    }
+    
+    void refuel()
+    {
     	if (selectedVehicle instanceof Car) {
     		((Car) selectedVehicle).refuel();
     		setFuelProgress(false);    		
@@ -190,6 +238,7 @@ public class OverTransportController {
 			setFuelProgress(false);
 		}
     }
+    
     
     void setFuelProgress(Boolean reset)
     {
@@ -202,6 +251,7 @@ public class OverTransportController {
 		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
 			fuelPercentage = ((AnimalPoweredVehicle) selectedVehicle).getTiredness();					
 		}
+    	
 		fuelProgressBar.setProgress(fuelPercentage/100);
 		
 		//update information
@@ -213,6 +263,41 @@ public class OverTransportController {
 		
     }
 
+    @FXML
+    void accelerateButtonPressed(ActionEvent event)
+    {
+    	accelerate();    	
+		informationLabel.setText(service.printState());    	
+    }
+    
+    
+    @FXML
+    void brakeButtonPressed(ActionEvent even)
+    {
+    	brake();
+    	informationLabel.setText(service.printState());
+    }
+    
+    void accelerate()
+    {
+    	if (selectedVehicle instanceof Car) {
+			((Car) selectedVehicle).accelerate();										
+			
+		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
+			((AnimalPoweredVehicle) selectedVehicle).accelerate();					
+		}
+    }
+    
+    void brake()
+    {
+    	if (selectedVehicle instanceof Car) {
+			((Car) selectedVehicle).brake();										
+			
+		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
+			((AnimalPoweredVehicle) selectedVehicle).brake();					
+		}
+    }
+    
 }
 
 
