@@ -30,4 +30,8 @@ public class Trip {
 		return (short) (currentSegmentIndex * 100 / (segmentsToReach.size()));
 	}
 
+	public List<RoadSegment> getSegmentsToReach()
+	{
+		return segmentsToReach;
+	}
 }

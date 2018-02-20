@@ -29,7 +29,7 @@
   </rowConstraints>
    <children>
       <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Accelerate" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-      <Button fx:id="refuelButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Refuel" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+      <Button fx:id="refuelButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#refuelVehicle" text="Refuel" GridPane.columnIndex="3" GridPane.rowIndex="9" />
       <Button fx:id="startButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#startJourney" text="Start" GridPane.columnIndex="4" GridPane.rowIndex="9" />
       <Label text="Starting Point:" />
       <Label maxWidth="1.7976931348623157E308" text="London" textAlignment="CENTER" GridPane.rowIndex="1">
@@ -41,15 +41,16 @@
       <ComboBox fx:id="destinationComboBox" onAction="#setCurrentTrip" prefWidth="150.0" GridPane.rowIndex="3" />
       <Label text="Type of Vehicle" GridPane.rowIndex="4" />
       <ComboBox fx:id="vehicleComboBox" onAction="#setCurrentTrip" prefWidth="150.0" GridPane.rowIndex="5" />
-      <ProgressBar prefWidth="200.0" progress="0.0" GridPane.rowIndex="9" />
-      <Label text="Fuel Level" GridPane.rowIndex="8" />
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
+      <ProgressBar fx:id="fuelProgressBar" prefWidth="200.0" progress="0.0" GridPane.rowIndex="9" />
+      <Label text="Fuel Level/Animal Strength" GridPane.rowIndex="8" />
+      <Pane prefHeight="71.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
          <children>
-            <Label fx:id="informationLabel" layoutX="23.0" layoutY="8.0" text="Infromation" />
+            <Label fx:id="informationLabel" layoutX="23.0" layoutY="8.0" text="Infromation" textFill="#3b16bf" />
          </children>
       </Pane>
       <Label text="Vehicle Name" GridPane.rowIndex="6" />
       <TextField fx:id="vehicleNameTextField" onAction="#setCurrentTrip" GridPane.rowIndex="7" />
+      <Label fx:id="labelTripInformation" prefHeight="46.0" prefWidth="300.0" text="Trip Information" textFill="#8d0808" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2147483647" />
    </children>
    <padding>
       <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
