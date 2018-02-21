@@ -229,7 +229,7 @@ public class OverTransportController {
 		
 		destinationComboBox.setDisable(tripGoingOn);
 		vehicleComboBox.setDisable(tripGoingOn);
-		vehicleNameTextField.setDisable(tripGoingOn || selectedVehicle instanceof AnimalPoweredVehicle);
+		vehicleNameTextField.setDisable(tripGoingOn);
 	}
 
 	@FXML
