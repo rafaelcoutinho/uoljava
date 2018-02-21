@@ -163,7 +163,7 @@ public class OverTransportController {
 				setFuelProgress(false);
 
 				String segmentInfo = "Speed Limit: " + Integer.toString(service.getCurrentSegment().getSpeedLimit())
-						+ "\n";
+						+ " km per hour \n";
 
 				labelTripInformation.setText(segmentInfo);
 			} else {
@@ -214,9 +214,10 @@ public class OverTransportController {
 			} else {
 				// start over
 				onGoingTrip = false;
-				changeUIMode("Start",onGoingTrip);
-				informationLabel.setText(service.printState());
+				changeUIMode("Start",onGoingTrip);				
 			}
+			informationLabel.setText(service.printState());
+			setFuelProgress(false);
 		}
 	}
 
@@ -226,6 +227,8 @@ public class OverTransportController {
 		accelerateButton.setDisable(!tripGoingOn);	
 		brakeButton.setDisable(!tripGoingOn);
 		refuelButton.setDisable(!tripGoingOn);
+		
+		labelTripInformation.setText("");
 		
 		destinationComboBox.setDisable(tripGoingOn);
 		vehicleComboBox.setDisable(tripGoingOn);

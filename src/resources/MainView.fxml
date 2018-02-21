@@ -7,12 +7,14 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane hgap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.overtransport.ui.OverTransportController">
+<GridPane hgap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="447.0" prefWidth="498.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.overtransport.ui.OverTransportController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="151.0" minWidth="10.0" prefWidth="151.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="71.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="106.0" minWidth="10.0" prefWidth="76.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="79.0" minWidth="10.0" prefWidth="72.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="67.0" minWidth="10.0" prefWidth="62.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="67.0" minWidth="10.0" prefWidth="62.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="67.0" minWidth="10.0" prefWidth="62.0" />
   </columnConstraints>
   <rowConstraints>
@@ -26,12 +28,25 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints />
   </rowConstraints>
    <children>
-      <Button fx:id="accelerateButton" minWidth="140" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accelerateButtonPressed" text="Accelerate" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-      <Button fx:id="refuelButton"  disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#refuelVehicle" text="Refuel" GridPane.columnIndex="4" GridPane.rowIndex="9" />
-      <Button fx:id="startButton" minWidth="200" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#startJourney" text="Start" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-      <Button fx:id="brakeButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#brakeButtonPressed" text="Brake" GridPane.columnIndex="3" GridPane.rowIndex="9" disable="true" />
+      <Button fx:id="accelerateButton" disable="true" maxWidth="1.7976931348623157E308" minWidth="57.0" mnemonicParsing="false" onAction="#accelerateButtonPressed" prefHeight="25.0" prefWidth="57.0" text="Accelerate" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="refuelButton" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#refuelVehicle" text="Refuel" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="7">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Button fx:id="startButton" maxWidth="1.7976931348623157E308" minWidth="200" mnemonicParsing="false" onAction="#startJourney" prefHeight="75.0" prefWidth="331.0" text="Start" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="8" GridPane.rowSpan="2">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font></Button>
+      <Button fx:id="brakeButton" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#brakeButtonPressed" text="Brake" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="7">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
       <Label text="Starting Point:" />
       <Label maxWidth="1.7976931348623157E308" text="London" textAlignment="CENTER" GridPane.rowIndex="1">
          <font>
@@ -46,12 +61,19 @@
       <Label text="Fuel Level/Animal Strength" GridPane.rowIndex="8" />
       <Pane prefHeight="71.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
          <children>
-            <Label fx:id="informationLabel" layoutX="23.0" layoutY="8.0" text="Infromation" textFill="#3b16bf" />
+            <Label fx:id="informationLabel" layoutX="23.0" layoutY="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Infromation" textFill="#3b16bf">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Label>
          </children>
       </Pane>
       <Label text="Vehicle Name" GridPane.rowIndex="6" />
-      <TextField fx:id="vehicleNameTextField"  GridPane.rowIndex="7" />
-      <Label fx:id="labelTripInformation" prefHeight="89.0" prefWidth="300.0" text="Trip Information" textFill="#8d0808" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" GridPane.rowSpan="2147483647" />
+      <TextField fx:id="vehicleNameTextField" GridPane.rowIndex="7" />
+      <Label fx:id="labelTripInformation" prefHeight="89.0" prefWidth="300.0" text="Speed Limit" textFill="#8d0808" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
       
    </children>
    <padding>
