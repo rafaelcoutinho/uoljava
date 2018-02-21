@@ -5,6 +5,7 @@ import edu.overtransport.exception.NoFuelException;
 public abstract class Car implements Vehicle {
 	private int fuelTankPercentageFull = 0;
 	private short currentSpeed = 0;
+	private String name;
 
 	protected abstract short getIncSpeedStep();
 
@@ -12,6 +13,16 @@ public abstract class Car implements Vehicle {
 
 	public Car(String name) {
 		this.fuelTankPercentageFull = 100;
+		
+		if (name != "")
+		{
+			this.name = name;
+		}
+		else
+		{
+			this.name = "No Name";
+		}
+		
 	}
 
 	public void refuel() {
@@ -53,4 +64,8 @@ public abstract class Car implements Vehicle {
 		fuelTankPercentageFull -= 20;
 	}
 
+	public String getName()
+	{
+		return name;
+	}
 }

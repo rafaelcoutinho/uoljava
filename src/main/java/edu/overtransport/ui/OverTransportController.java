@@ -136,9 +136,7 @@ public class OverTransportController {
 		// clear
 		vehicleNameTextField.setText("");
 		informationLabel.setText("");
-		labelTripInformation.setText("");
-
-		
+		labelTripInformation.setText("");		
 	}
 
 
@@ -153,7 +151,7 @@ public class OverTransportController {
 			selectedVehicle.accelerate();// accelerate once
 			onGoingTrip = true;
 			String startButtonLabel ="Drive next..";
-			changeUIMode(startButtonLabel,onGoingTrip);
+			changeUIMode(startButtonLabel, onGoingTrip);
 			
 		}
 
@@ -183,7 +181,7 @@ public class OverTransportController {
 		} catch (UnsuitableVehicleException e) {
 
 			JOptionPane.showMessageDialog(null,
-					"This vehicle type is not suitable for this road segment. " + e.getMessage(), "Unsuitable Vehicle",
+					"This vehicle type is not suitable for this road segment.", "Unsuitable Vehicle",
 					JOptionPane.WARNING_MESSAGE);
 
 			// start over
@@ -217,6 +215,7 @@ public class OverTransportController {
 				// start over
 				onGoingTrip = false;
 				changeUIMode("Start",onGoingTrip);
+				informationLabel.setText(service.printState());
 			}
 		}
 	}
@@ -230,7 +229,7 @@ public class OverTransportController {
 		
 		destinationComboBox.setDisable(tripGoingOn);
 		vehicleComboBox.setDisable(tripGoingOn);
-		vehicleNameTextField.setDisable(tripGoingOn);
+		vehicleNameTextField.setDisable(tripGoingOn || selectedVehicle instanceof AnimalPoweredVehicle);
 	}
 
 	@FXML
@@ -256,9 +255,7 @@ public class OverTransportController {
 					JOptionPane.ERROR_MESSAGE);
     		return false;
     	}
-    	String vehicleName = vehicleNameTextField.getText() != "" ? vehicleNameTextField.getText() : "No Name";  
-    	
-    	   	    	
+    	String vehicleName = vehicleNameTextField.getText() != "" ? vehicleNameTextField.getText() : "No Name";     	    	
     	
     	switch(vType)
     	{
@@ -267,7 +264,7 @@ public class OverTransportController {
 	    	{
 	    		Integer horses = null;
 	    		do {
-	    			String number = JOptionPane.showInputDialog(null, "You have selected a Chariot, please enter the number of horses you want on it.", "Horse power", JOptionPane.QUESTION_MESSAGE);
+	    			String number = JOptionPane.showInputDialog(null, "You have selected a Chariot, please enter the number of horses you want on it. (Maximum of 10)", "Horse power", JOptionPane.QUESTION_MESSAGE);
 	    			try {
 	    				horses=Integer.parseInt(number);
 	    			}catch (NumberFormatException e) {
@@ -322,6 +319,7 @@ public class OverTransportController {
 		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
 			((AnimalPoweredVehicle) selectedVehicle).feed();
 		}
+		informationLabel.setText(service.printState());
 	}
 
 	void setFuelProgress(Boolean reset) {
