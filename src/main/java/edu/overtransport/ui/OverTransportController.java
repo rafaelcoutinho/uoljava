@@ -118,10 +118,7 @@ public class OverTransportController {
 	@FXML
 	private ProgressBar fuelProgressBar;
 
-	@FXML
-	private TextField vehicleNameTextField;
-
-
+	
 	boolean onGoingTrip = false;
 	@FXML
 	public void initialize() {
@@ -133,8 +130,7 @@ public class OverTransportController {
 		destinationComboBox.setValue(destinationList.get(0));
 		destinationComboBox.setItems(destinationList);
 
-		// clear
-		vehicleNameTextField.setText("");
+		// clear		
 		informationLabel.setText("");
 		labelTripInformation.setText("");		
 	}
@@ -185,8 +181,7 @@ public class OverTransportController {
 					JOptionPane.WARNING_MESSAGE);
 
 			// start over
-			onGoingTrip = false;
-			changeUIMode("Start",onGoingTrip);
+			startOver();
 
 		} catch (LackOfResourcesException e) {
 
@@ -213,14 +208,20 @@ public class OverTransportController {
 				refuel();
 			} else {
 				// start over
-				onGoingTrip = false;
-				changeUIMode("Start",onGoingTrip);				
+				startOver();			
 			}
 			informationLabel.setText(service.printState());
 			setFuelProgress(false);
 		}
 	}
 
+	
+	private void startOver()
+	{
+		// start over
+		onGoingTrip = false;
+		changeUIMode("Start",onGoingTrip);
+	}
 
 	private void changeUIMode(String startButtonLabel,boolean tripGoingOn) {
 		startButton.setText(startButtonLabel);
@@ -231,8 +232,7 @@ public class OverTransportController {
 		labelTripInformation.setText("");
 		
 		destinationComboBox.setDisable(tripGoingOn);
-		vehicleComboBox.setDisable(tripGoingOn);
-		vehicleNameTextField.setDisable(tripGoingOn);
+		vehicleComboBox.setDisable(tripGoingOn);		
 	}
 
 	@FXML
@@ -258,7 +258,8 @@ public class OverTransportController {
 					JOptionPane.ERROR_MESSAGE);
     		return false;
     	}
-    	String vehicleName = vehicleNameTextField.getText() != "" ? vehicleNameTextField.getText() : "No Name";     	    	
+    	
+    	String vehicleName = "";  	    	
     	
     	switch(vType)
     	{
@@ -277,8 +278,7 @@ public class OverTransportController {
 	    				if(opt==2) {
 	    					return false;
 	    				}
-					}
-	    			
+					}    			
 	    			
 	    		}while(horses==null);
 	    		
@@ -288,12 +288,14 @@ public class OverTransportController {
 	    	
 	    	case RacingCar:
 	    	{
+	    		vehicleName = getVehicleName();
 	    		selectedVehicle = new RacingCar(vehicleName);
 	    		break;
 	    	}
 	    	
 	    	case Offroad:
 	    	{
+	    		vehicleName = getVehicleName();
 	    		selectedVehicle = new OffRoad(vehicleName);   		
 	    		break;
 	    	}
@@ -308,6 +310,20 @@ public class OverTransportController {
     	return true;
     }
 
+	String getVehicleName()
+	{
+		
+		String vehicleName = JOptionPane.showInputDialog(null, "Please enter the name of the Vehicle:", "Vehicle Name", JOptionPane.QUESTION_MESSAGE);
+				
+		if (vehicleName.equals(""))
+		{
+			vehicleName = "No Name";
+		}
+		
+		return vehicleName;		
+	}
+	
+	
 	@FXML
 	void refuelVehicle(ActionEvent even) {
 		refuel();

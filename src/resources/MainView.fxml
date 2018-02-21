@@ -39,7 +39,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Button fx:id="startButton" maxWidth="1.7976931348623157E308" minWidth="200" mnemonicParsing="false" onAction="#startJourney" prefHeight="75.0" prefWidth="331.0" text="Start" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.rowIndex="8" GridPane.rowSpan="2">
+      <Button fx:id="startButton" maxWidth="1.7976931348623157E308" minWidth="200" mnemonicParsing="false" onAction="#startJourney" prefHeight="75.0" prefWidth="331.0" text="Start" GridPane.columnSpan="7" GridPane.rowIndex="8" GridPane.rowSpan="2">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Button>
@@ -57,8 +57,8 @@
       <ComboBox fx:id="destinationComboBox" prefWidth="150.0" GridPane.rowIndex="3" />
       <Label text="Type of Vehicle" GridPane.rowIndex="4" />
       <ComboBox fx:id="vehicleComboBox" prefWidth="150.0" GridPane.rowIndex="5" />
-      <ProgressBar fx:id="fuelProgressBar" prefWidth="200.0" progress="0.0" GridPane.rowIndex="9" />
-      <Label text="Fuel Level/Animal Strength" GridPane.rowIndex="8" />
+      <ProgressBar fx:id="fuelProgressBar" prefWidth="200.0" progress="0.0" GridPane.rowIndex="7" />
+      <Label text="Fuel Level/Animal Strength" GridPane.rowIndex="6" />
       <Pane prefHeight="71.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
          <children>
             <Label fx:id="informationLabel" layoutX="23.0" layoutY="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Infromation" textFill="#3b16bf">
@@ -67,8 +67,6 @@
                </font></Label>
          </children>
       </Pane>
-      <Label text="Vehicle Name" GridPane.rowIndex="6" />
-      <TextField fx:id="vehicleNameTextField" GridPane.rowIndex="7" />
       <Label fx:id="labelTripInformation" prefHeight="89.0" prefWidth="300.0" text="Speed Limit" textFill="#8d0808" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
          <font>
             <Font name="System Bold" size="14.0" />

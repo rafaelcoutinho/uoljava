@@ -39,7 +39,7 @@ public class TransportService {
 		
 		if (currentVehicle instanceof Car) {
 			state+="Fuel \t\t:\t" + ((Car) currentVehicle).getFuelStatus() + "% \n";
-			state+="Car Name \t:\t " + ((Car) currentVehicle).getName() + "\n";
+			state+="Car Name \t:\t" + ((Car) currentVehicle).getName() + "\n";
 		} else if (currentVehicle instanceof AnimalPoweredVehicle) {
 			state+="Strength \t\t:\t" + ((AnimalPoweredVehicle) currentVehicle).getTiredness() + "% \n";
 			state+="# of Horses \t:\t " + ((AnimalPoweredVehicle) currentVehicle).numberOfHorses() + "\n";
