@@ -1,6 +1,6 @@
 package test.edu.overtrasport;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -12,8 +12,8 @@ import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.Trip;
 import edu.overtransport.model.vehicles.Chariot;
-import edu.overtransport.model.vehicles.RacingCar;
 import edu.overtransport.model.vehicles.OffRoad;
+import edu.overtransport.model.vehicles.RacingCar;
 
 public class BasicTestCases {
 	DestinationDB db = new DestinationDB();

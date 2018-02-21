@@ -1,7 +1,6 @@
 package edu.overtransport.model.vehicles;
 
 import edu.overtransport.exception.ExhaustedAnimalException;
-import edu.overtransport.exception.NoFuelException;
 
 /**
  * Abstraction for a animal powered vehicle.
