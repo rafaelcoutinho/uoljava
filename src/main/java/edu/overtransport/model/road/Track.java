@@ -26,6 +26,12 @@ public class Track implements RoadSegment {
 		return name;
 	}
 
+	/**
+	 * @throws UnsuitableVehicleException
+	 *             - if vehicle is a Racing car and has low suspension.
+	 * @throws BrokenCar
+	 *             - if vehicle is too fast.
+	 */
 	@Override
 	public void run(Vehicle vehicle) throws UnsuitableVehicleException, LackOfResourcesException {
 		// must be slow on a Track
