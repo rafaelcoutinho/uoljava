@@ -5,6 +5,12 @@ import edu.overtransport.exception.TicketingException;
 import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.vehicles.Vehicle;
 
+/**
+ * Represents a road segment well paved with low-speed limits.
+ * 
+ * @author coutinho
+ *
+ */
 public class CityStreet implements RoadSegment {
 
 	private String name;
@@ -15,8 +21,14 @@ public class CityStreet implements RoadSegment {
 		this.maxSpeed = maxSpeed;
 	}
 
+	/**
+	 * Checks if the Vehicle is not faster than the speed limit
+	 * 
+	 * @throws TicketingException - if vehicle is too fast
+	 * @throws LackOfResourcesException - if vehicle  gets out of resources
+	 */
 	@Override
-	public void run(Vehicle vehicle) throws TicketingException, UnsuitableVehicleException, LackOfResourcesException {
+	public void run(Vehicle vehicle) throws TicketingException, LackOfResourcesException {
 		if (vehicle.getSpeed() > maxSpeed) {
 			throw new TicketingException("You got a ticket, max speed is " + maxSpeed + " km/h and the vehicle was at "
 					+ vehicle.getSpeed() + " km/h");
@@ -29,9 +41,8 @@ public class CityStreet implements RoadSegment {
 	public String getName() {
 		return name;
 	}
-	
-	public int getSpeedLimit()
-	{
+
+	public int getSpeedLimit() {
 		return maxSpeed;
 	}
 

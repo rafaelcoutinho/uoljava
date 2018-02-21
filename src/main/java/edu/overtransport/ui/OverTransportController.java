@@ -24,6 +24,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 
+/**
+ * UI Controller responsible for the GUI of this program. Allows to select a
+ * trip and construct a vehicle. Then to drive all the road segments.
+ * 
+ * @author chambers
+ *
+ */
 public class OverTransportController {
 	enum VehicleTypes {
 		Chariot("Chariot"), RacingCar("Racing Car"), Offroad("Off-road");
@@ -118,8 +125,8 @@ public class OverTransportController {
 	@FXML
 	private ProgressBar fuelProgressBar;
 
-	
 	boolean onGoingTrip = false;
+
 	@FXML
 	public void initialize() {
 
@@ -130,25 +137,24 @@ public class OverTransportController {
 		destinationComboBox.setValue(destinationList.get(0));
 		destinationComboBox.setItems(destinationList);
 
-		// clear		
+		// clear
 		informationLabel.setText("");
-		labelTripInformation.setText("");		
+		labelTripInformation.setText("");
 	}
 
-
 	@FXML
-	synchronized void  startJourney(ActionEvent event) {
-		
+	synchronized void startJourney(ActionEvent event) {
+
 		if (!onGoingTrip) {
-			if(!setCurrentTrip()) {
+			if (!setCurrentTrip()) {
 				return;
 			}
 			service.startTrip(selectedVehicle, selectedDestination);
 			selectedVehicle.accelerate();// accelerate once
 			onGoingTrip = true;
-			String startButtonLabel ="Drive next..";
+			String startButtonLabel = "Drive next..";
 			changeUIMode(startButtonLabel, onGoingTrip);
-			
+
 		}
 
 		try {
@@ -163,11 +169,11 @@ public class OverTransportController {
 
 				labelTripInformation.setText(segmentInfo);
 			} else {
-				JOptionPane.showMessageDialog(null, "You have arrived!",
-						"Trip status", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "You have arrived!", "Trip status",
+						JOptionPane.INFORMATION_MESSAGE);
 				informationLabel.setText("You have arrived!");
 				onGoingTrip = false;
-				changeUIMode("Start",onGoingTrip);
+				changeUIMode("Start", onGoingTrip);
 			}
 
 		} catch (TicketingException e) {
@@ -176,9 +182,8 @@ public class OverTransportController {
 
 		} catch (UnsuitableVehicleException e) {
 
-			JOptionPane.showMessageDialog(null,
-					"This vehicle type is not suitable for this road segment.", "Unsuitable Vehicle",
-					JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "This vehicle type is not suitable for this road segment.",
+					"Unsuitable Vehicle", JOptionPane.WARNING_MESSAGE);
 
 			// start over
 			startOver();
@@ -208,122 +213,111 @@ public class OverTransportController {
 				refuel();
 			} else {
 				// start over
-				startOver();			
+				startOver();
 			}
 			informationLabel.setText(service.printState());
 			setFuelProgress(false);
 		}
 	}
 
-	
-	private void startOver()
-	{
+	private void startOver() {
 		// start over
 		onGoingTrip = false;
-		changeUIMode("Start",onGoingTrip);
+		changeUIMode("Start", onGoingTrip);
 	}
 
-	private void changeUIMode(String startButtonLabel,boolean tripGoingOn) {
+	private void changeUIMode(String startButtonLabel, boolean tripGoingOn) {
 		startButton.setText(startButtonLabel);
-		accelerateButton.setDisable(!tripGoingOn);	
+		accelerateButton.setDisable(!tripGoingOn);
 		brakeButton.setDisable(!tripGoingOn);
 		refuelButton.setDisable(!tripGoingOn);
-		
+
 		labelTripInformation.setText("");
-		
+
 		destinationComboBox.setDisable(tripGoingOn);
-		vehicleComboBox.setDisable(tripGoingOn);		
+		vehicleComboBox.setDisable(tripGoingOn);
 	}
 
 	@FXML
-    private boolean setCurrentTrip() 
-    {
-    	//set current trip based on selection in combo box.
-    	String tripSelName = destinationComboBox.getSelectionModel().getSelectedItem();
-    	DestinationNames dest = DestinationNames.fromLabel(tripSelName);
-    	if(dest==null) {
-    		//show error
-    		JOptionPane.showMessageDialog(null,
-					"Please select a destination", "Invalid input",
+	private boolean setCurrentTrip() {
+		// set current trip based on selection in combo box.
+		String tripSelName = destinationComboBox.getSelectionModel().getSelectedItem();
+		DestinationNames dest = DestinationNames.fromLabel(tripSelName);
+		if (dest == null) {
+			// show error
+			JOptionPane.showMessageDialog(null, "Please select a destination", "Invalid input",
 					JOptionPane.ERROR_MESSAGE);
-    		return false;
-    	}
-    	selectedDestination = db.getTrip(dest.getDbKey());
-    	String vehicle = vehicleComboBox.getSelectionModel().getSelectedItem();
-    	VehicleTypes vType = VehicleTypes.fromLabel(vehicle);
-    	if(vType==null) {
-    		//show error
-    		JOptionPane.showMessageDialog(null,
-					"Please select a vehicle", "Invalid input",
-					JOptionPane.ERROR_MESSAGE);
-    		return false;
-    	}
-    	
-    	String vehicleName = "";  	    	
-    	
-    	switch(vType)
-    	{
-	    	
-	    	case Chariot:
-	    	{
-	    		Integer horses = null;
-	    		do {
-	    			String number = JOptionPane.showInputDialog(null, "You have selected a Chariot, please enter the number of horses you want on it. (Maximum of 10)", "Horse power", JOptionPane.QUESTION_MESSAGE);
-	    			try {
-	    				horses=Integer.parseInt(number);
-	    			}catch (NumberFormatException e) {
-	    				int opt = JOptionPane.showConfirmDialog(null, "Please enter a valid numeric value. Want to try again?",
-	    						"Speeding Ticket",JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
-	    				System.out.println(opt);
-	    				if(opt==2) {
-	    					return false;
-	    				}
-					}    			
-	    			
-	    		}while(horses==null);
-	    		
-	    		selectedVehicle = new Chariot(horses);
-	    		break;
-	    	}
-	    	
-	    	case RacingCar:
-	    	{
-	    		vehicleName = getVehicleName();
-	    		selectedVehicle = new RacingCar(vehicleName);
-	    		break;
-	    	}
-	    	
-	    	case Offroad:
-	    	{
-	    		vehicleName = getVehicleName();
-	    		selectedVehicle = new OffRoad(vehicleName);   		
-	    		break;
-	    	}
-	    	default:
-	    		//show msg
-	    		JOptionPane.showMessageDialog(null,
-						"Invalid vehicle", "Invalid input",
-						JOptionPane.ERROR_MESSAGE);
-	    		return false;
-    	}
-    	setFuelProgress(true);
-    	return true;
-    }
+			return false;
+		}
+		selectedDestination = db.getTrip(dest.getDbKey());
+		String vehicle = vehicleComboBox.getSelectionModel().getSelectedItem();
+		VehicleTypes vType = VehicleTypes.fromLabel(vehicle);
+		if (vType == null) {
+			// show error
+			JOptionPane.showMessageDialog(null, "Please select a vehicle", "Invalid input", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
 
-	String getVehicleName()
-	{
-		
-		String vehicleName = JOptionPane.showInputDialog(null, "Please enter the name of the Vehicle:", "Vehicle Name", JOptionPane.QUESTION_MESSAGE);
-				
-		if (vehicleName.equals(""))
-		{
+		String vehicleName = "";
+
+		switch (vType) {
+
+		case Chariot: {
+			Integer horses = null;
+			do {
+				String number = JOptionPane.showInputDialog(null,
+						"You have selected a Chariot, please enter the number of horses you want on it. (Maximum of 10)",
+						"Horse power", JOptionPane.QUESTION_MESSAGE);
+				try {
+					horses = Integer.parseInt(number);
+				} catch (NumberFormatException e) {
+					int opt = JOptionPane.showConfirmDialog(null,
+							"Please enter a valid numeric value. Want to try again?", "Speeding Ticket",
+							JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+					System.out.println(opt);
+					if (opt == 2) {
+						return false;
+					}
+				}
+
+			} while (horses == null);
+
+			selectedVehicle = new Chariot(horses);
+			break;
+		}
+
+		case RacingCar: {
+			vehicleName = getVehicleName();
+			selectedVehicle = new RacingCar(vehicleName);
+			break;
+		}
+
+		case Offroad: {
+			vehicleName = getVehicleName();
+			selectedVehicle = new OffRoad(vehicleName);
+			break;
+		}
+		default:
+			// show msg
+			JOptionPane.showMessageDialog(null, "Invalid vehicle", "Invalid input", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		setFuelProgress(true);
+		return true;
+	}
+
+	String getVehicleName() {
+
+		String vehicleName = JOptionPane.showInputDialog(null, "Please enter the name of the Vehicle:", "Vehicle Name",
+				JOptionPane.QUESTION_MESSAGE);
+
+		if (vehicleName.equals("")) {
 			vehicleName = "No Name";
 		}
-		
-		return vehicleName;		
+
+		return vehicleName;
 	}
-	
-	
+
 	@FXML
 	void refuelVehicle(ActionEvent even) {
 		refuel();
@@ -333,7 +327,6 @@ public class OverTransportController {
 	void refuel() {
 		if (selectedVehicle instanceof Car) {
 			((Car) selectedVehicle).refuel();
-			
 
 		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
 			((AnimalPoweredVehicle) selectedVehicle).feed();
@@ -375,21 +368,11 @@ public class OverTransportController {
 	}
 
 	void accelerate() {
-		if (selectedVehicle instanceof Car) {
-			((Car) selectedVehicle).accelerate();
-
-		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
-			((AnimalPoweredVehicle) selectedVehicle).accelerate();
-		}
+		selectedVehicle.accelerate();
 	}
 
 	void brake() {
-		if (selectedVehicle instanceof Car) {
-			((Car) selectedVehicle).brake();
-
-		} else if (selectedVehicle instanceof AnimalPoweredVehicle) {
-			((AnimalPoweredVehicle) selectedVehicle).brake();
-		}
+		selectedVehicle.brake();
 	}
 
 }

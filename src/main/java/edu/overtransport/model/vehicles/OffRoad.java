@@ -1,5 +1,11 @@
 package edu.overtransport.model.vehicles;
 
+/**
+ * A all terrain Car.
+ * 
+ * @author coutinho
+ *
+ */
 public class OffRoad extends Car {
 	public OffRoad(String name) {
 		super(name);

@@ -4,6 +4,16 @@ import java.util.List;
 
 import edu.overtransport.model.road.RoadSegment;
 
+/**
+ * Data class defining a trip, it contains the destination info and the
+ * RoadSegments to reach the destination.
+ * 
+ * It also controls the travel, changing its state defining where in the list of
+ * segments the current travel is.
+ * 
+ * @author coutinho
+ *
+ */
 public class Trip {
 	private String destinationName;
 	private List<RoadSegment> segmentsToReach;

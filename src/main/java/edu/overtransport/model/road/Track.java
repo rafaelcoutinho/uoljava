@@ -6,6 +6,13 @@ import edu.overtransport.exception.UnsuitableVehicleException;
 import edu.overtransport.model.vehicles.RacingCar;
 import edu.overtransport.model.vehicles.Vehicle;
 
+/**
+ * Unpaved road that is unsuitable for low cars and can break a vehicle that
+ * enters it too fast
+ * 
+ * @author coutinho
+ *
+ */
 public class Track implements RoadSegment {
 	private String name;
 	private final static int MAX_TRACK_SPEED = 40;
@@ -36,7 +43,6 @@ public class Track implements RoadSegment {
 
 	@Override
 	public int getSpeedLimit() {
-		// TODO Auto-generated method stub
 		return MAX_TRACK_SPEED;
 	}
 

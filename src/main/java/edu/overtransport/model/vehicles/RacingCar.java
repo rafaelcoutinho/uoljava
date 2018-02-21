@@ -1,5 +1,11 @@
 package edu.overtransport.model.vehicles;
 
+/**
+ * A fast car and sportive. Can achieve very high speeds.
+ * 
+ * @author coutinho
+ *
+ */
 public class RacingCar extends Car {
 	private static final short MAX_RANCING_CAR_SPEED = 200;
 

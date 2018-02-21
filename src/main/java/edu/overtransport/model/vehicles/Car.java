@@ -1,7 +1,14 @@
 package edu.overtransport.model.vehicles;
 
+import edu.overtransport.exception.ExhaustedAnimalException;
 import edu.overtransport.exception.NoFuelException;
 
+/**
+ * Combustion powered vehicles. Need gas and has a limited autonomy.
+ * 
+ * @author coutinho
+ *
+ */
 public abstract class Car implements Vehicle {
 	private int fuelTankPercentageFull = 0;
 	private short currentSpeed = 0;
@@ -13,16 +20,13 @@ public abstract class Car implements Vehicle {
 
 	public Car(String name) {
 		this.fuelTankPercentageFull = 100;
-		
-		if (name != "")
-		{
+
+		if (name != "") {
 			this.name = name;
-		}
-		else
-		{
+		} else {
 			this.name = "No Name";
 		}
-		
+
 	}
 
 	public void refuel() {
@@ -56,16 +60,19 @@ public abstract class Car implements Vehicle {
 		return true;
 	}
 
+	/**
+	 * @throws NoFuelException
+	 *             - if car runs out of fuel
+	 */
 	@Override
 	public void run() throws NoFuelException {
 		if (fuelTankPercentageFull == 0) {
-			throw new NoFuelException();
+			throw new NoFuelException("Empty");
 		}
 		fuelTankPercentageFull -= 20;
 	}
 
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 }

@@ -1,15 +1,25 @@
 package edu.overtransport.model.vehicles;
 
+/**
+ * A chariot is an animal powered vehicle that requires some horses to be
+ * constructed.
+ * 
+ * It cannot accelerate more than MAX_CHARIOT_SPEED
+ * 
+ * @author coutinho
+ *
+ */
 public class Chariot extends AnimalPoweredVehicle {
+	private static final int MAX_CHARIOT_SPEED = 30;
 	private short currentSpeed = 0;
 
 	public Chariot(int numberOfAnimals) {
 		super(numberOfAnimals);
 		if (numberOfAnimals == 0) {
 			throw new IllegalArgumentException("At least one horse is needed");
-		}else if (numberOfAnimals>10) {
+		} else if (numberOfAnimals > 10) {
 			throw new IllegalArgumentException("Too many horses");
-				
+
 		}
 	}
 
@@ -30,7 +40,7 @@ public class Chariot extends AnimalPoweredVehicle {
 
 	@Override
 	public boolean accelerate() {
-		if (currentSpeed == 30) {
+		if (currentSpeed == MAX_CHARIOT_SPEED) {
 			return false;
 		}
 		currentSpeed += 5;
